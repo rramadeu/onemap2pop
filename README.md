@@ -22,3 +22,7 @@ Then, to install `onemap2pop` from github:
 ```R
 install_github("augusto-garcia/onemap2pop")
 ```
+
+## Tutorial
+
+https://github.com/rramadeu/onemap2pop/blob/master/vignettes/Tutorial_onemap2pop.pdf
