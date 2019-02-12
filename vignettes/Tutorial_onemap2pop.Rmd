@@ -1,0 +1,154 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+<!--
+  %\VignetteEngine{knitr::docco_linear}
+%\VignetteIndexEntry{onemap2pop Tutorial}
+-->
+  
+# onemap2pop
+**Tutorial to estimate recombination fraction and best order for two connected populations**
+  
+```{r, globalsetup, echo=FALSE, results='hide', cache=FALSE}
+#opts_chunk$set(cache=TRUE, autodep=TRUE)
+```
+
+```{r, echo=FALSE, results='hide', include=FALSE, cache=FALSE}
+library(onemap)
+library(onemap2pop)
+```
+
+## Overview
+Here we show how to use the HMM-EM algorithm of Quezada et al. (2019) implemented in the `onemap` R package to estimate the recombination fraction in a scenario with two outcrossing connected populations (having a common parent). The objective is, based on the information of both populations, to obtain the most likely order and multipoint distances.
+
+## Citation
+To cite this R tutorial:
+
+Quezada et al. (2019)
+
+## Before to follow this tutorial
+We expected that you have enough knowledge to build a linkage map for outcrossing populations with `onemap` software. If not, please follow its tutorial, available at  [tutorial](http://augusto-garcia.github.io/onemap/vignettes_highres/Outcrossing_Populations.html).
+
+## Built-in data
+In this tutorial, we will use a built-in data of the `onemap` package called `onemap2pop`. It is a simulated data of two full-sib populations that share one same parent. We used the software `PedigreeSim` (Voorrips and Maliepaard, 2012) to simulate them and `onemap` to build the individual linkage maps. To load this data:
+
+```{r}
+data(onemap2pop)
+```
+
+## rf_2pops
+The function `rf_2pops` estimates the recombination fraction based on two mapping populations. It estimates the recombination fractions based on a multipoint approach implemented using the methodology of Hidden Markov Models (HMM) with the Expectation Maximization (EM) algorithm as explained in the supplementary material of Quezada et al. (2019).
+
+To use it, the user must had already built the individual maps for each population and assigned the correspondent linkage groups within markers. After building the maps for each population, the user must present an initial order with sharable markers between both populations, i.e., both populations have the markers provided in this order. Let's assume that we built the following two linkage maps for a given linkage group (hereafter LG1) based on the information derived from two populations (`POP1` and `POP2`).
+
+```{r}
+LG1_POP1_final
+LG1_POP2_final
+```
+
+We have in this example two different orders for the same markers, one for each population:
+
+```{r}
+LG1_POP1_final$seq.num
+LG1_POP2_final$seq.num
+```
+
+The first step is to obtain the multipoint recombination fraction for the the two previously order based on the information of both populations.
+
+```{r}
+## Extracting the marker names:
+order_LG1POP1 <- colnames(POP1_geno$geno)[LG1_POP1_final$seq.num]
+
+## Computing the rf and likelihood considering information of POP1 and POP2 
+LG1_POP1order <- rf_2pops(markers_names = order_LG1POP1,
+                          data_P1 = POP1_geno,
+                          data_P2 = POP2_geno,
+                          rftwopoints_P1 = twopts_POP1,
+                          rftwopoints_P2 = twopts_POP2,
+                          LOD = 3,
+                          max.rf = 0.5,
+                          log10.mintol = -6,
+                          max_it = 60)
+
+## Extracting the sequence likelihood of the order:
+LG1_POP1order$P1P2_seq.like
+
+## Extracting the marker names:
+order_LG1POP2 <- colnames(POP2_geno$geno)[LG1_POP2_final$seq.num]
+
+## Computing the rf and likelihood considering information of POP1 and POP2 
+LG1_POP2order <- rf_2pops(markers_names = order_LG1POP2,
+                          data_P1 = POP1_geno,
+                          data_P2 = POP2_geno,
+                          rftwopoints_P1 = twopts_POP1,
+                          rftwopoints_P2 = twopts_POP2,
+                          LOD = 3,
+                          max.rf = 0.5,
+                          log10.mintol = -6,
+                          max_it = 60)
+
+## Extracting the sequence likelihood of the order:
+LG1_POP2order$P1P2_seq.like
+```
+
+The likelihood of the populations can not necessarily be comparable (due do differente sample sizes, missing data, informativeness of markers), but just to have a starting point, let us use the order of POP2 (higher likelihood) for both populations. To print the maps with such order:
+
+```{r}
+LG1_POP2order
+```
+
+The Parent 1 is the common parent between the populations, therefore, has the same linkage configuration. Parent 2 is different between the populations, and so is the phase configuration. The recombination fraction on the maps is the one estimated using the information of both populations based on HMM-EM from Quezada et al. (2019). The log-likelihood is computed for each map using the same recombination fractions for POP1, POP2, and POP1 and POP2 simultaneously.
+
+We will use now the RIPPLE algorithm. This function is current not optimized and may take an overnight for each linkage group. To avoid such waiting in this tutorial, the object `ripple_result_LG1` was already made available and the user does not need to run the following chunk.
+
+```{r, eval=FALSE}
+## It may take an overnight to run...
+ripple_result_LG1 <- ripple_2pops(markers_names = order_LG1POP2,
+                                  data_P1 = POP1_geno,
+                                  data_P2 = POP2_geno,
+                                  twopts_POP1 = twopts_POP1,
+                                  twopts_POP2 = twopts_POP2,
+                                  LOD = 3,
+                                  max.rf = 0.5,
+                                  log10.mintol = -2,
+                                  max_it = 60,
+                                  window = 4)
+```
+
+Now we find the order that maximizes the log-likelihood of the map.
+```{r}
+## Which rippled order has the higher likelihood
+max(ripple_result_LG1[[2]])
+
+## Which is such order
+which(ripple_result_LG1[[2]]==max(ripple_result_LG1[[2]]))[1]
+
+## Creating an object with such order
+final_order_LG1 <- ripple_result_LG1[[1]][386,]
+```
+
+Based on the RIPPLE results, the 386 has the highest likelihood which is also higher than the initial order from the POP2 map. Therefore, we will use it as our final linkage group order. It is worthy noting that this order matches with the one we simulated. Building and printing our final order of LG1:
+
+```{r, echo=TRUE, eval=FALSE}
+LG1_final <- rf_2pops(markers_names = final_order_LG1,
+                      data_P1 = POP1_geno,
+                      data_P2 = POP2_geno,
+                      rftwopoints_P1 = twopts_POP1,
+                      rftwopoints_P2 = twopts_POP2,
+                      LOD = 3,
+                      max.rf = 0.5,
+                      log10.mintol = -6,
+                      max_it = 60)
+
+LG1_final
+```
+
+This procedure needs to be applied for all the other linkage groups.
+
+## Bibliography
+
+VOORRIPS, Roeland E.; MALIEPAARD, Chris A. The simulation of meiosis in diploid and tetraploid organisms using various genetic models. BMC bioinformatics, v. 13, n. 1, p. 248, 2012.
+
+QUEZADA et al, 2019.

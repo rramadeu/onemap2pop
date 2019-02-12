@@ -1,0 +1,573 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\hypertarget{onemap2pop}{%
+\section{onemap2pop}\label{onemap2pop}}
+
+\textbf{Tutorial to estimate recombination fraction and best order for
+two connected populations}
+
+\hypertarget{overview}{%
+\subsection{Overview}\label{overview}}
+
+Here we show how to use the HMM-EM algorithm of Quezada et al. (2019)
+implemented in the \texttt{onemap} R package to estimate the
+recombination fraction in a scenario with two outcrossing connected
+populations (having a common parent, in crosses such
+\(A^\male \times B^\female\) and \(B^\female \times C^\male\)). The
+objective is, based on the information of both populations, to obtain
+the most likely order and multipoint distances.
+
+\hypertarget{citation}{%
+\subsection{Citation}\label{citation}}
+
+To cite this R tutorial:
+
+Quezada et al. (2019)
+
+\hypertarget{before-to-follow-this-tutorial}{%
+\subsection{Before to follow this
+tutorial}\label{before-to-follow-this-tutorial}}
+
+We expected that you have enough knowledge to build a linkage map for
+outcrossing populations with \texttt{onemap} software. If not, please
+follow its tutorial, available at
+\href{http://augusto-garcia.github.io/onemap/vignettes_highres/Outcrossing_Populations.html}{tutorial}.
+
+\hypertarget{built-in-data}{%
+\subsection{Built-in data}\label{built-in-data}}
+
+In this tutorial, we will use a built-in data of the \texttt{onemap}
+package called \texttt{onemap2pop}. It is a simulated data of two
+full-sib populations that share one same parent. We used the software
+\texttt{PedigreeSim} (Voorrips and Maliepaard, 2012) to simulate them
+and \texttt{onemap} to build the individual linkage maps. To load this
+data:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(onemap2pop)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{rf_2pops}{%
+\subsection{rf\_2pops}\label{rf_2pops}}
+
+The function \texttt{rf\_2pops} estimates the recombination fraction
+based on two mapping populations. It estimates the recombination
+fractions based on a multipoint approach implemented using the
+methodology of Hidden Markov Models (HMM) with the Expectation
+Maximization (EM) algorithm as explained in the supplementary material
+of Quezada et al. (2019).
+
+To use it, the user must had already built the individual maps for each
+population and assigned the correspondent linkage groups within markers.
+After building the maps for each population, the user must present an
+initial order with sharable markers between both populations, i.e., both
+populations have the markers provided in this order. Let's assume that
+we built the following two linkage maps for a given linkage group
+(hereafter LG1) based on the information derived from two populations
+(\texttt{POP1} and \texttt{POP2}).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_POP1_final}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Printing map:
+## 
+## Markers           Position           Parent 1       Parent 2
+## 
+##  1 M1                 0.00           a |  | a       a |  | b 
+##  2 M2                 5.35           a |  | a       a |  | b 
+##  3 M3                 9.36           a |  | a       a |  | b 
+##  4 M4                20.97           a |  | b       a |  | b 
+##  5 M5                26.13           a |  | b       b |  | a 
+##  6 M6                30.29           a |  | b       a |  | b 
+##  7 M7                34.10           a |  | a       a |  | b 
+##  8 M8                37.44           a |  | a       a |  | b 
+##  9 M9                41.89           a |  | a       b |  | a 
+## 11 M11               49.11           a |  | a       a |  | b 
+## 12 M12               51.34           a |  | a       b |  | a 
+## 13 M13               57.46           a |  | a       a |  | b 
+## 10 M10               57.46           a |  | b       a |  | a 
+## 14 M14               69.49           a |  | b       b |  | a 
+## 15 M15               75.26           b |  | a       b |  | a 
+## 16 M16               80.24           a |  | b       a |  | a 
+## 17 M17               87.43           a |  | a       a |  | b 
+## 18 M18               90.47           a |  | a       b |  | a 
+## 19 M19               96.01           a |  | b       b |  | a 
+## 20 M20               99.88           b |  | a       a |  | a 
+## 21 M21              106.46           a |  | a       a |  | b 
+## 
+## 21 markers            log-likelihood: -1114.715
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_POP2_final}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Printing map:
+## 
+## Markers           Position           Parent 1       Parent 2
+## 
+##  1 M1                 0.00           a |  | a       a |  | b 
+##  2 M2                 6.71           a |  | a       a |  | b 
+##  3 M3                 8.71           a |  | a       a |  | b 
+##  4 M4                13.41           a |  | b       a |  | b 
+##  5 M5                15.94           a |  | b       a |  | a 
+##  6 M6                24.65           a |  | b       b |  | a 
+##  7 M7                28.74           a |  | a       b |  | a 
+##  8 M8                30.34           a |  | a       a |  | b 
+##  9 M9                35.98           a |  | a       b |  | a 
+## 10 M10               44.36           a |  | b       a |  | b 
+## 11 M11               49.45           a |  | a       b |  | a 
+## 12 M12               56.79           a |  | a       b |  | a 
+## 13 M13               59.85           a |  | a       b |  | a 
+## 14 M14               62.74           a |  | b       a |  | b 
+## 15 M15               73.32           b |  | a       a |  | a 
+## 16 M16               76.78           a |  | b       a |  | a 
+## 17 M17               76.78           a |  | a       b |  | a 
+## 18 M18               81.91           a |  | a       a |  | b 
+## 20 M20               91.39           b |  | a       b |  | a 
+## 19 M19               95.08           a |  | b       a |  | a 
+## 21 M21               95.08           a |  | a       b |  | a 
+## 
+## 21 markers            log-likelihood: -1053.239
+\end{verbatim}
+
+We have in this example two different orders for the same markers, one
+for each population:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_POP1_final}\OperatorTok{$}\NormalTok{seq.num}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  2  3  4  5  6  7  8  9 11 12 13 10 14 15 16 17 18 19 20 21
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_POP2_final}\OperatorTok{$}\NormalTok{seq.num}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 20 19 21
+\end{verbatim}
+
+The first step is to obtain the multipoint recombination fraction for
+the the two previously order based on the information of both
+populations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Extracting the marker names:}
+\NormalTok{order_LG1POP1 <-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(POP1_geno}\OperatorTok{$}\NormalTok{geno)[LG1_POP1_final}\OperatorTok{$}\NormalTok{seq.num]}
+
+\NormalTok{## Computing the rf and likelihood considering information of POP1 and POP2 }
+\NormalTok{LG1_POP1order <-}\StringTok{ }\KeywordTok{rf_2pops}\NormalTok{(}\DataTypeTok{markers_names =}\NormalTok{ order_LG1POP1,}
+                          \DataTypeTok{data_P1 =}\NormalTok{ POP1_geno,}
+                          \DataTypeTok{data_P2 =}\NormalTok{ POP2_geno,}
+                          \DataTypeTok{rftwopoints_P1 =}\NormalTok{ twopts_POP1,}
+                          \DataTypeTok{rftwopoints_P2 =}\NormalTok{ twopts_POP2,}
+                          \DataTypeTok{LOD =} \DecValTok{3}\NormalTok{,}
+                          \DataTypeTok{max.rf =} \FloatTok{0.5}\NormalTok{,}
+                          \DataTypeTok{log10.mintol =} \DecValTok{-6}\NormalTok{,}
+                          \DataTypeTok{max_it =} \DecValTok{60}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## interaction: 10 ; loglike: -2261.52695815027 ; tol: 0.09
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 20 ; loglike: -2256.31269345973 ; tol: 0.01
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 30 ; loglike: -2251.8721010692 ; tol: 0.005
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 40 ; loglike: -2251.36224392631 ; tol: 7e-04
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 50 ; loglike: -2251.35050257312 ; tol: 6e-05
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 60 ; loglike: -2251.35040251465 ; tol: 5e-06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Extracting the sequence likelihood of the order:}
+\NormalTok{LG1_POP1order}\OperatorTok{$}\NormalTok{P1P2_seq.like}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -2251.35
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Extracting the marker names:}
+\NormalTok{order_LG1POP2 <-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(POP2_geno}\OperatorTok{$}\NormalTok{geno)[LG1_POP2_final}\OperatorTok{$}\NormalTok{seq.num]}
+
+\NormalTok{## Computing the rf and likelihood considering information of POP1 and POP2 }
+\NormalTok{LG1_POP2order <-}\StringTok{ }\KeywordTok{rf_2pops}\NormalTok{(}\DataTypeTok{markers_names =}\NormalTok{ order_LG1POP2,}
+                          \DataTypeTok{data_P1 =}\NormalTok{ POP1_geno,}
+                          \DataTypeTok{data_P2 =}\NormalTok{ POP2_geno,}
+                          \DataTypeTok{rftwopoints_P1 =}\NormalTok{ twopts_POP1,}
+                          \DataTypeTok{rftwopoints_P2 =}\NormalTok{ twopts_POP2,}
+                          \DataTypeTok{LOD =} \DecValTok{3}\NormalTok{,}
+                          \DataTypeTok{max.rf =} \FloatTok{0.5}\NormalTok{,}
+                          \DataTypeTok{log10.mintol =} \DecValTok{-6}\NormalTok{,}
+                          \DataTypeTok{max_it =} \DecValTok{60}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## interaction: 10 ; loglike: -2178.64809140789 ; tol: 0.1
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 20 ; loglike: -2178.29040139245 ; tol: 0.02
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 30 ; loglike: -2171.05600028205 ; tol: 0.005
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 40 ; loglike: -2170.56243120964 ; tol: 7e-04
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 50 ; loglike: -2170.56057851398 ; tol: 6e-05
+\end{verbatim}
+
+\begin{verbatim}
+## interaction: 60 ; loglike: -2170.56057710544 ; tol: 5e-06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Extracting the sequence likelihood of the order:}
+\NormalTok{LG1_POP2order}\OperatorTok{$}\NormalTok{P1P2_seq.like}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -2170.561
+\end{verbatim}
+
+The likelihood of the populations can not necessarily be comparable (due
+do differente sample sizes, missing data, informativeness of markers),
+but just to have a starting point, let us use the order of POP2 (higher
+likelihood) for both populations. To print the maps with such order:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_POP2order}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $P1
+## 
+## Printing map:
+## 
+## Markers           Position           Parent 1       Parent 2
+## 
+##  1 M1                 0.00           a |  | a       a |  | b 
+##  2 M2                 6.71           a |  | a       a |  | b 
+##  3 M3                 8.71           a |  | a       a |  | b 
+##  4 M4                13.41           a |  | b       a |  | b 
+##  5 M5                15.94           a |  | b       b |  | a 
+##  6 M6                24.65           a |  | b       a |  | b 
+##  7 M7                28.75           a |  | a       a |  | b 
+##  8 M8                30.34           a |  | a       a |  | b 
+##  9 M9                35.98           a |  | a       b |  | a 
+## 10 M10               44.35           a |  | b       a |  | a 
+## 11 M11               49.46           a |  | a       a |  | b 
+## 12 M12               56.82           a |  | a       b |  | a 
+## 13 M13               59.88           a |  | a       a |  | b 
+## 14 M14               62.73           a |  | b       b |  | a 
+## 15 M15               71.93           b |  | a       b |  | a 
+## 16 M16               74.99           a |  | b       a |  | a 
+## 17 M17               79.90           a |  | a       a |  | b 
+## 18 M18               84.30           a |  | a       b |  | a 
+## 20 M20               92.23           b |  | a       a |  | a 
+## 19 M19               94.70           a |  | b       b |  | a 
+## 21 M21               97.27           a |  | a       a |  | b 
+## 
+## 21 markers            log-likelihood: -1118.765 
+## 
+## 
+## $P2
+## 
+## Printing map:
+## 
+## Markers           Position           Parent 1       Parent 2
+## 
+##  1 M1                 0.00           a |  | a       a |  | b 
+##  2 M2                 6.71           a |  | a       a |  | b 
+##  3 M3                 8.71           a |  | a       a |  | b 
+##  4 M4                13.41           a |  | b       a |  | b 
+##  5 M5                15.94           a |  | b       a |  | a 
+##  6 M6                24.65           a |  | b       b |  | a 
+##  7 M7                28.75           a |  | a       b |  | a 
+##  8 M8                30.34           a |  | a       a |  | b 
+##  9 M9                35.98           a |  | a       b |  | a 
+## 10 M10               44.35           a |  | b       a |  | b 
+## 11 M11               49.46           a |  | a       b |  | a 
+## 12 M12               56.82           a |  | a       b |  | a 
+## 13 M13               59.88           a |  | a       b |  | a 
+## 14 M14               62.73           a |  | b       a |  | b 
+## 15 M15               71.93           b |  | a       a |  | a 
+## 16 M16               74.99           a |  | b       a |  | a 
+## 17 M17               79.90           a |  | a       b |  | a 
+## 18 M18               84.30           a |  | a       a |  | b 
+## 20 M20               92.23           b |  | a       b |  | a 
+## 19 M19               94.70           a |  | b       a |  | a 
+## 21 M21               97.27           a |  | a       b |  | a 
+## 
+## 21 markers            log-likelihood: -1051.795 
+## 
+## 
+## $P1P2_seq.like
+## [1] -2170.561
+\end{verbatim}
+
+The Parent 1 is the common parent between the populations, therefore,
+has the same linakge phase configuration. Parent 2 is different between
+the populations, and so is free phase configuration. The recombination
+fraction on the maps is the one estimated using the information of both
+populations based on HMM-EM from Quezada et al. (2019). The
+log-likelihood is computed for each map using the same recombination
+fractions for POP1, POP2, and POP1 and POP2 simultaneously.
+
+We will use the RIPPLE algorithm. This function is current not optimized
+and may take an overnight for each linkage group. To avoid such waiting
+in this tutorial, the object \texttt{ripple\_result\_LG1} was already
+made available and the user does not need to run the following chunk.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## It may take an overnight to run...}
+\NormalTok{ripple_result_LG1 <-}\StringTok{ }\KeywordTok{ripple_2pops}\NormalTok{(}\DataTypeTok{markers_names =}\NormalTok{ order_LG1POP2,}
+                                  \DataTypeTok{data_P1 =}\NormalTok{ POP1_geno,}
+                                  \DataTypeTok{data_P2 =}\NormalTok{ POP2_geno,}
+                                  \DataTypeTok{twopts_POP1 =}\NormalTok{ twopts_POP1,}
+                                  \DataTypeTok{twopts_POP2 =}\NormalTok{ twopts_POP2,}
+                                  \DataTypeTok{LOD =} \DecValTok{3}\NormalTok{,}
+                                  \DataTypeTok{max.rf =} \FloatTok{0.5}\NormalTok{,}
+                                  \DataTypeTok{log10.mintol =} \DecValTok{-2}\NormalTok{,}
+                                  \DataTypeTok{max_it =} \DecValTok{60}\NormalTok{,}
+                                  \DataTypeTok{window =} \DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Now we find the order that maximizes the log-likelihood of the map.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Which rippled order has the higher likelihood}
+\KeywordTok{max}\NormalTok{(ripple_result_LG1[[}\DecValTok{2}\NormalTok{]])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -2169.025
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Which is such order}
+\KeywordTok{which}\NormalTok{(ripple_result_LG1[[}\DecValTok{2}\NormalTok{]]}\OperatorTok{==}\KeywordTok{max}\NormalTok{(ripple_result_LG1[[}\DecValTok{2}\NormalTok{]]))[}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 386
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{## Creating an object with such order}
+\NormalTok{final_order_LG1 <-}\StringTok{ }\NormalTok{ripple_result_LG1[[}\DecValTok{1}\NormalTok{]][}\DecValTok{386}\NormalTok{,]}
+\end{Highlighting}
+\end{Shaded}
+
+Based on the RIPPLE results, the 386 has the highest likelihood which is
+also higher than the initial order from the POP2 map. Therefore, we will
+use it as our final linkage group order. It is worthy noting that this
+order matches with the one we simulated. Building and printing our final
+order of LG1:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LG1_final <-}\StringTok{ }\KeywordTok{rf_2pops}\NormalTok{(}\DataTypeTok{markers_names =}\NormalTok{ final_order_LG1,}
+                      \DataTypeTok{data_P1 =}\NormalTok{ POP1_geno,}
+                      \DataTypeTok{data_P2 =}\NormalTok{ POP2_geno,}
+                      \DataTypeTok{rftwopoints_P1 =}\NormalTok{ twopts_POP1,}
+                      \DataTypeTok{rftwopoints_P2 =}\NormalTok{ twopts_POP2,}
+                      \DataTypeTok{LOD =} \DecValTok{3}\NormalTok{,}
+                      \DataTypeTok{max.rf =} \FloatTok{0.5}\NormalTok{,}
+                      \DataTypeTok{log10.mintol =} \DecValTok{-6}\NormalTok{,}
+                      \DataTypeTok{max_it =} \DecValTok{60}\NormalTok{)}
+
+\NormalTok{LG1_final}
+\end{Highlighting}
+\end{Shaded}
+
+This procedure needs to be applied for all the other linkage groups.
+
+\hypertarget{bibliography}{%
+\subsection{Bibliography}\label{bibliography}}
+
+VOORRIPS, Roeland E.; MALIEPAARD, Chris A. The simulation of meiosis in
+diploid and tetraploid organisms using various genetic models. BMC
+bioinformatics, v. 13, n. 1, p.~248, 2012.
+
+QUEZADA et al, 2019.
+
+
+\end{document}

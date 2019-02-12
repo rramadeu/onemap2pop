@@ -1,0 +1,17 @@
+Package: onemap2pop
+Type: Package
+Title: onemap extension for multipopulation
+Version: 0.1.5000
+Date: 8/Jan/2018
+Author: Rodrigo Rampazo Amadeu and Marianella Quezada and Augusto Garcia
+Maintainer: Rodrigo Rampazo Amadeu <rramadeu@gmail.com>
+Description: R package extension to expand onemap for two fullsibs populations sharing a common parent.
+Depends: onemap (>= 2.1.1003), ggplot2 (>= 2.2.1), plyr (>= 1.8.4), dplyr
+        (>= 0.5.0), plotly (>= 4.5.6), stringr (>= 1.1.0), reshape2 (>=
+        1.4.2), combinat (>= 0.0-8)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+NeedsCompilation: no
+Packaged: 2019-01-8
